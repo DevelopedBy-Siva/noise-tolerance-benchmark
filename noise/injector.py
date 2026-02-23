@@ -4,10 +4,7 @@ from config import SEEDS
 
 
 def inject_label_noise(texts, labels, noise_level, seed=SEEDS[0]):
-    """
-    Randomly flips labels. 0 becomes 1 and 1 becomes 0.
-    noise_level=0.2 means 20% of labels get flipped.
-    """
+    """Randomly flips labels. 0 becomes 1 and 1 becomes 0."""
     rng = random.Random(seed)
     noisy_labels = labels.copy()
 
@@ -24,7 +21,6 @@ def inject_text_noise(texts, labels, noise_level, seed=SEEDS[0]):
     """
     Corrupts text at the word level. For each selected sample, randomly
     applies one of: word deletion, character swap, or word duplication.
-    noise_level controls what fraction of samples get corrupted.
     """
     rng = random.Random(seed)
     noisy_texts = texts.copy()
@@ -41,7 +37,7 @@ def inject_text_noise(texts, labels, noise_level, seed=SEEDS[0]):
 def inject_structural_noise(texts, labels, noise_level, seed=SEEDS[0]):
     """
     Adds two kinds of structural garbage to the dataset.
-    Half the noise budget goes to duplicating minority class samples heavily.
+    Half the noise budget duplicates minority class samples heavily.
     The other half inserts meaningless very short strings.
     """
     rng = random.Random(seed)
@@ -69,6 +65,32 @@ def inject_structural_noise(texts, labels, noise_level, seed=SEEDS[0]):
     noisy_texts, noisy_labels = zip(*combined)
 
     return list(noisy_texts), list(noisy_labels)
+
+
+def inject_label_noise_conditional(texts, labels, noise_level, seed=SEEDS[0]):
+    """
+    Class-conditional label flipping for imbalanced datasets like ToxicChat.
+    Toxic labels (1) and non-toxic labels (0) are flipped independently,
+    each at the specified noise_level rate. This preserves class prevalence
+    better than uniform random flipping, which would disproportionately
+    destroy the already-rare toxic signal.
+    """
+    rng = random.Random(seed)
+    noisy_labels = list(labels)
+
+    toxic_indices = [i for i, l in enumerate(labels) if l == 1]
+    nontoxic_indices = [i for i, l in enumerate(labels) if l == 0]
+
+    n_toxic_flip = int(len(toxic_indices) * noise_level)
+    n_nontoxic_flip = int(len(nontoxic_indices) * noise_level)
+
+    for i in rng.sample(toxic_indices, n_toxic_flip):
+        noisy_labels[i] = 0
+
+    for i in rng.sample(nontoxic_indices, n_nontoxic_flip):
+        noisy_labels[i] = 1
+
+    return list(texts), noisy_labels
 
 
 def _corrupt_text(text, rng):
