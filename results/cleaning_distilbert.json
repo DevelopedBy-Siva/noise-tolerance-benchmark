@@ -1,28 +1,80 @@
 {
-  "0.2": {
+  "0.1": {
     "noisy_baseline": {
-      "accuracy_mean": 0.9143,
-      "accuracy_std": 0.0,
-      "f1_mean": 0.9233,
-      "f1_std": 0.0
+      "accuracy_mean": 0.9352,
+      "accuracy_std": 0.0016,
+      "f1_mean": 0.9418,
+      "f1_std": 0.0014
     },
     "confidence": {
-      "accuracy_mean": 0.8916,
-      "accuracy_std": 0.0,
-      "f1_mean": 0.8987,
-      "f1_std": 0.0
+      "accuracy_mean": 0.9315,
+      "accuracy_std": 0.003,
+      "f1_mean": 0.9386,
+      "f1_std": 0.0027
     },
     "loss": {
-      "accuracy_mean": 0.9171,
-      "accuracy_std": 0.0,
-      "f1_mean": 0.926,
-      "f1_std": 0.0
+      "accuracy_mean": 0.9325,
+      "accuracy_std": 0.0004,
+      "f1_mean": 0.9395,
+      "f1_std": 0.0003
     },
     "heuristic": {
-      "accuracy_mean": 0.9079,
-      "accuracy_std": 0.0,
-      "f1_mean": 0.9174,
-      "f1_std": 0.0
+      "accuracy_mean": 0.931,
+      "accuracy_std": 0.0024,
+      "f1_mean": 0.9381,
+      "f1_std": 0.002
+    }
+  },
+  "0.2": {
+    "noisy_baseline": {
+      "accuracy_mean": 0.9165,
+      "accuracy_std": 0.0036,
+      "f1_mean": 0.925,
+      "f1_std": 0.0032
+    },
+    "confidence": {
+      "accuracy_mean": 0.8961,
+      "accuracy_std": 0.0041,
+      "f1_mean": 0.9061,
+      "f1_std": 0.0042
+    },
+    "loss": {
+      "accuracy_mean": 0.9191,
+      "accuracy_std": 0.0033,
+      "f1_mean": 0.9274,
+      "f1_std": 0.003
+    },
+    "heuristic": {
+      "accuracy_mean": 0.912,
+      "accuracy_std": 0.0049,
+      "f1_mean": 0.921,
+      "f1_std": 0.0042
+    }
+  },
+  "0.4": {
+    "noisy_baseline": {
+      "accuracy_mean": 0.8144,
+      "accuracy_std": 0.0057,
+      "f1_mean": 0.834,
+      "f1_std": 0.0053
+    },
+    "confidence": {
+      "accuracy_mean": 0.6539,
+      "accuracy_std": 0.1359,
+      "f1_mean": 0.7653,
+      "f1_std": 0.0694
+    },
+    "loss": {
+      "accuracy_mean": 0.7771,
+      "accuracy_std": 0.0067,
+      "f1_mean": 0.797,
+      "f1_std": 0.0054
+    },
+    "heuristic": {
+      "accuracy_mean": 0.8093,
+      "accuracy_std": 0.0009,
+      "f1_mean": 0.8282,
+      "f1_std": 0.0009
     }
   }
 }

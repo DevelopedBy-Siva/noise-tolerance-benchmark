@@ -5,10 +5,22 @@
     "f1_mean": 0.9149,
     "f1_std": 0.0
   },
+  "0.1": {
+    "accuracy_mean": 0.8914,
+    "accuracy_std": 0.0025,
+    "f1_mean": 0.9042,
+    "f1_std": 0.002
+  },
   "0.2": {
-    "accuracy_mean": 0.8661,
-    "accuracy_std": 0.0,
-    "f1_mean": 0.8811,
-    "f1_std": 0.0
+    "accuracy_mean": 0.8674,
+    "accuracy_std": 0.001,
+    "f1_mean": 0.8829,
+    "f1_std": 0.0014
+  },
+  "0.4": {
+    "accuracy_mean": 0.6865,
+    "accuracy_std": 0.0047,
+    "f1_mean": 0.7172,
+    "f1_std": 0.0039
   }
 }

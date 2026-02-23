@@ -1,14 +1,26 @@
 {
   "0.0": {
-    "accuracy_mean": 0.9483,
-    "accuracy_std": 0.0,
-    "f1_mean": 0.9536,
-    "f1_std": 0.0
+    "accuracy_mean": 0.9469,
+    "accuracy_std": 0.0009,
+    "f1_mean": 0.9524,
+    "f1_std": 0.0007
+  },
+  "0.1": {
+    "accuracy_mean": 0.9352,
+    "accuracy_std": 0.0016,
+    "f1_mean": 0.9418,
+    "f1_std": 0.0014
   },
   "0.2": {
-    "accuracy_mean": 0.9143,
-    "accuracy_std": 0.0,
-    "f1_mean": 0.9233,
-    "f1_std": 0.0
+    "accuracy_mean": 0.9165,
+    "accuracy_std": 0.0036,
+    "f1_mean": 0.925,
+    "f1_std": 0.0032
+  },
+  "0.4": {
+    "accuracy_mean": 0.8144,
+    "accuracy_std": 0.0057,
+    "f1_mean": 0.834,
+    "f1_std": 0.0053
   }
 }

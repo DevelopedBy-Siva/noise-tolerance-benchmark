@@ -7,8 +7,8 @@ def confidence_filter(texts, labels, model):
     Removes samples where the model's confidence is below the threshold.
     Low confidence usually means the sample is ambiguous or mislabeled.
     Keeps only the samples the model feels sure about.
-    If the threshold is too aggressive and would remove everything,
-    falls back to keeping the top 50% most confident samples instead.
+    If the threshold is too aggressive and would remove everything or leave
+    only one class, falls back to keeping the top 50% most confident samples.
     """
     proba = model.predict_proba(texts)
     max_confidence = np.max(proba, axis=1)
@@ -16,9 +16,12 @@ def confidence_filter(texts, labels, model):
 
     keep = [i for i, conf in enumerate(max_confidence) if conf >= threshold]
 
-    if len(keep) == 0:
+    if len(keep) == 0 or len(set(labels[i] for i in keep)) < 2:
         cutoff = np.median(max_confidence)
         keep = [i for i, conf in enumerate(max_confidence) if conf >= cutoff]
+
+    if len(set(labels[i] for i in keep)) < 2:
+        return texts.copy(), labels.copy()
 
     return _subset(texts, labels, keep)
 
@@ -28,11 +31,15 @@ def loss_filter(texts, labels, model):
     Removes the highest-loss samples -- the ones the model struggles with most.
     High loss strongly correlates with mislabeled examples.
     Cuts everything above the configured loss percentile.
+    If the result ends up single-class, returns the original data untouched.
     """
     losses = model.get_loss_per_sample(texts, labels)
     cutoff = np.percentile(losses, CLEANING_CONFIG["loss_percentile"])
 
     keep = [i for i, loss in enumerate(losses) if loss <= cutoff]
+
+    if len(set(labels[i] for i in keep)) < 2:
+        return texts.copy(), labels.copy()
 
     return _subset(texts, labels, keep)
 
@@ -53,6 +60,9 @@ def heuristic_filter(texts, labels):
             continue
         seen.add(text)
         keep.append(i)
+
+    if len(keep) == 0 or len(set(labels[i] for i in keep)) < 2:
+        return texts.copy(), labels.copy()
 
     return _subset(texts, labels, keep)
 

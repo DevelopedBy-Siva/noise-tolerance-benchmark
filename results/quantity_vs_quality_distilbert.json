@@ -1,0 +1,19 @@
+{
+  "noisy_50k_30pct": {
+    "accuracy_mean": 0.8855,
+    "accuracy_std": 0.0056,
+    "f1_mean": 0.8974,
+    "f1_std": 0.0048
+  },
+  "clean_20k": {
+    "accuracy_mean": 0.9291,
+    "accuracy_std": 0.001,
+    "f1_mean": 0.9364,
+    "f1_std": 0.0006
+  },
+  "delta": {
+    "f1": 0.039,
+    "accuracy": 0.0436,
+    "clean_wins": true
+  }
+}
