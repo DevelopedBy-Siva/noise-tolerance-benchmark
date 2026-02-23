@@ -1,25 +1,30 @@
 import json
 import numpy as np
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, average_precision_score
 from config import RESULTS_DIR
 
 
 def evaluate(model, texts, labels):
     """
-    Runs prediction and returns accuracy and F1 for a single run.
+    Runs prediction and returns PR-AUC, macro F1, weighted F1, and accuracy.
+    PR-AUC is the primary metric for imbalanced classification like ToxicChat.
     """
     predictions = model.predict(texts)
+    proba = model.predict_proba(texts)
+    pos_proba = proba[:, 1]
+
     return {
+        "prauc": average_precision_score(labels, pos_proba),
+        "f1_macro": f1_score(labels, predictions, average="macro"),
+        "f1_weighted": f1_score(labels, predictions, average="weighted"),
         "accuracy": accuracy_score(labels, predictions),
-        "f1": f1_score(labels, predictions, average="binary"),
     }
 
 
 def aggregate_across_seeds(results_per_seed):
     """
-    Takes a list of dicts like [{"accuracy": 0.91, "f1": 0.90}, ...]
+    Takes a list of dicts like [{"prauc": 0.91, "f1_macro": 0.90, ...}, ...]
     and returns mean and std for each metric.
-    This is what goes into the paper-style result tables.
     """
     metrics = list(results_per_seed[0].keys())
     aggregated = {}
@@ -33,10 +38,7 @@ def aggregate_across_seeds(results_per_seed):
 
 
 def save_results(results, filename):
-    """
-    Dumps results as JSON into the results directory.
-    filename should be something descriptive like 'noise_sweep_logreg'.
-    """
+    """Dumps results as JSON into the results directory."""
     path = RESULTS_DIR / f"{filename}.json"
     with open(path, "w") as f:
         json.dump(results, f, indent=2)
