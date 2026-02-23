@@ -1,3 +1,6 @@
+import joblib
+import numpy as np
+from pathlib import Path
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
@@ -43,8 +46,6 @@ class LogRegModel:
         Higher score means the model is more confused about that sample.
         Used by the cleaning strategies to rank samples by suspiciousness.
         """
-        import numpy as np
-
         proba = self.predict_proba(texts)
         eps = 1e-9
         losses = []
@@ -52,3 +53,20 @@ class LogRegModel:
             p = np.clip(proba[i][label], eps, 1 - eps)
             losses.append(-np.log(p))
         return losses
+
+    def save(self, path):
+        """
+        Saves the fitted pipeline to disk using joblib.
+        Path should be something like saved_models/logreg_noise_0.0.pkl
+        """
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump(self.pipeline, path)
+
+    @classmethod
+    def load(cls, path):
+        """
+        Loads a saved pipeline from disk and returns a ready-to-use LogRegModel.
+        """
+        instance = cls.__new__(cls)
+        instance.pipeline = joblib.load(path)
+        return instance

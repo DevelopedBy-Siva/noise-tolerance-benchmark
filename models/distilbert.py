@@ -1,5 +1,7 @@
+import logging
 import numpy as np
 import torch
+from pathlib import Path
 from torch.utils.data import Dataset, DataLoader
 from transformers import (
     DistilBertTokenizerFast,
@@ -9,8 +11,6 @@ from transformers import (
 from torch.optim import AdamW
 from tqdm import tqdm
 from config import DISTILBERT_CONFIG
-
-import logging
 
 logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
 
@@ -136,3 +136,26 @@ class DistilBertModel:
             p = np.clip(proba[i][label], eps, 1 - eps)
             losses.append(-np.log(p))
         return losses
+
+    def save(self, path):
+        """
+        Saves the model and tokenizer to a directory.
+        Path should be something like saved_models/distilbert_noise_0.0/
+        """
+        Path(path).mkdir(parents=True, exist_ok=True)
+        self.model.save_pretrained(path)
+        self.tokenizer.save_pretrained(path)
+
+    @classmethod
+    def load(cls, path):
+        """
+        Loads a saved model from disk and returns a ready-to-use DistilBertModel.
+        """
+        instance = cls.__new__(cls)
+        instance.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        instance.tokenizer = DistilBertTokenizerFast.from_pretrained(path)
+        instance.model = DistilBertForSequenceClassification.from_pretrained(path).to(
+            instance.device
+        )
+        instance.model.eval()
+        return instance
