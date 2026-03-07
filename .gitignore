@@ -209,3 +209,4 @@ __marimo__/
 data/raw
 planv2.md
 .DS_Store
+.conda
